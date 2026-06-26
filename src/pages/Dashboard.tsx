@@ -18,11 +18,11 @@ export default function Dashboard() {
     )
   }
 
-  const stageEmoji: Record<string, string> = {
-    egg: '🥚',
-    baby: '🐣',
-    child: '🐥',
-    companion: '🐦',
+  const spriteMap: Record<string, string> = {
+    egg: '/assets/sprites/egg.svg',
+    baby: '/assets/sprites/baby.svg',
+    child: '/assets/sprites/child.svg',
+    companion: '/assets/sprites/companion.svg',
   }
 
   return (
@@ -34,7 +34,11 @@ export default function Dashboard() {
       {/* Pet Card */}
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-6">
-          <div className="text-6xl">{stageEmoji[pet.stage] || '🥚'}</div>
+          <img
+            src={spriteMap[pet.stage] || spriteMap.egg}
+            alt={pet.name}
+            className="w-24 h-24 drop-shadow-md"
+          />
           <div className="flex-1">
             <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">
               {pet.name}

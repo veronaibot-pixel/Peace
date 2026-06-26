@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="128" height="128">
+  <!-- Egg with dragon scale pattern -->
+  <rect x="11" y="8" width="10" height="16" rx="5" fill="#7DD87D"/>
+  <rect x="12" y="9" width="8" height="14" rx="4" fill="#A8E6A8"/>
+  <!-- Scale pattern -->
+  <rect x="14" y="11" width="2" height="2" fill="#5CBF5C"/>
+  <rect x="17" y="13" width="2" height="2" fill="#5CBF5C"/>
+  <rect x="14" y="15" width="2" height="2" fill="#5CBF5C"/>
+  <rect x="17" y="17" width="2" height="2" fill="#5CBF5C"/>
+  <!-- Crack on top -->
+  <rect x="14" y="8" width="1" height="3" fill="#4A4A4A"/>
+  <rect x="15" y="9" width="1" height="2" fill="#4A4A4A"/>
+  <rect x="16" y="8" width="1" height="2" fill="#4A4A4A"/>
+  <!-- Shadow -->
+  <ellipse cx="16" cy="25" rx="6" ry="2" fill="rgba(0,0,0,0.1)"/>
+</svg>
