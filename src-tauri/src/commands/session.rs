@@ -18,6 +18,48 @@ pub struct SessionCard {
     pub options: Vec<String>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct QuizData {
+    pub card_id: i64,
+    pub word: String,
+    pub options: Vec<String>,
+    pub correct: String,
+}
+
+#[tauri::command]
+pub async fn get_quiz_card(state: State<'_, AppState>) -> Result<Option<QuizData>, String> {
+    // Get one due card
+    let card = sqlx::query_as::<_, Card>(
+        "SELECT * FROM card WHERE (next_review_at IS NULL OR next_review_at <= datetime('now')) AND deck_id IN (SELECT id FROM deck WHERE is_active = 1) ORDER BY CASE WHEN state = 'new' THEN 0 ELSE 1 END, RANDOM() LIMIT 1"
+    )
+    .fetch_optional(&state.db)
+    .await
+    .map_err(|e| e.to_string())?;
+
+    let card = match card {
+        Some(c) => c,
+        None => return Ok(None),
+    };
+
+    // Get wrong options
+    let all_backs: Vec<String> = sqlx::query_scalar::<_, String>(
+        "SELECT back FROM card WHERE id != ? AND deck_id IN (SELECT id FROM deck WHERE is_active = 1) ORDER BY RANDOM() LIMIT 10"
+    )
+    .bind(card.id)
+    .fetch_all(&state.db)
+    .await
+    .map_err(|e| e.to_string())?;
+
+    let options = generate_options(&card.back, &all_backs);
+
+    Ok(Some(QuizData {
+        card_id: card.id,
+        word: card.front.clone(),
+        options,
+        correct: card.back.clone(),
+    }))
+}
+
 #[tauri::command]
 pub async fn start_session(
     state: State<'_, AppState>,

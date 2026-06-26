@@ -38,6 +38,7 @@ pub fn run() {
             commands::cards::get_cards_by_deck,
             commands::session::start_session,
             commands::session::submit_answer,
+            commands::session::get_quiz_card,
             commands::stats::get_daily_stats,
             commands::stats::get_streak,
             commands::window::toggle_ghost_mode,
