@@ -1,0 +1,43 @@
+stages:
+  - build
+
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/.cargo
+
+build-linux:
+  stage: build
+  image: ubuntu:22.04
+  before_script:
+    - apt update && apt install -y libwebkit2gtk-4.1-dev build-essential curl wget
+      file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      libsqlite3-dev pkg-config nodejs npm
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - source "$HOME/.cargo/env"
+    - npm install
+  script:
+    - source "$HOME/.cargo/env"
+    - cargo tauri build
+  artifacts:
+    paths:
+      - src-tauri/target/release/bundle/deb/*.deb
+      - src-tauri/target/release/bundle/appimage/*.AppImage
+    expire_in: 7 days
+  tags:
+    - linux
+
+build-macos:
+  stage: build
+  before_script:
+    - curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    - source "$HOME/.cargo/env"
+    - npm install
+  script:
+    - source "$HOME/.cargo/env"
+    - cargo tauri build
+  artifacts:
+    paths:
+      - src-tauri/target/release/bundle/dmg/*.dmg
+      - src-tauri/target/release/bundle/macos/*.app
+    expire_in: 7 days
+  tags:
+    - macos
